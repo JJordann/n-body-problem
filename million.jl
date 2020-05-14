@@ -40,7 +40,7 @@ function toImage(pos, frame_number)
             img[:, xy[1], xy[2]] = [1, 1, 1]
         end
     end
-
+	
     save("frame$(1000 + frame_number).png", colorview(RGB, img))
 end
 
@@ -55,8 +55,10 @@ for iter in 1:iters
     global vel = vel .+ (acc .* dt)
     global pos = pos .+ (vel .* dt)
     global acc = zeros(N, 3)
-    #scatter3d(pos[:, 1], pos[:, 2], pos[:, 3])
+    
     toImage(pos, iter);
+	#plotly() 
+	#scatter3d(pos[:, 1], pos[:, 2], pos[:, 3])
 end
 
 
