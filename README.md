@@ -1,2 +1,2 @@
 # n-body-problem
-![test2.gif]
+![gif](test2.gif)
