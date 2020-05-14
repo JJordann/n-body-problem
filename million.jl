@@ -19,17 +19,6 @@ vel_z = [0.0,-0.00190589,0.00192462,0.00055029,0.00039677,-0.00136504]
 vel = [vel_x' ; vel_y' ; vel_z']'
 
 
-#test1 = [-1, 1, 0; 
-#         -2, 1, 0; 
-#         -1, 2, 0;
-#         1, -1, 0;
-#         2, -1, 0;
-#         1, -2, 0]
-#
-#vel = 
-
-
-
 # image size
 n = 512
 dt = 50;
@@ -51,7 +40,6 @@ function toImage(pos, frame_number)
             img[:, xy[1], xy[2]] = [1, 1, 1]
         end
     end
-
 
     save("frame$(1000 + frame_number).png", colorview(RGB, img))
 end
