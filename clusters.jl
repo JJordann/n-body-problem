@@ -15,20 +15,24 @@ function generate_starting_conditions(cluster_number, object_number)
 	
 	for cluster in 1:cluster_number
 		#generate center of the cluster
-		x_center = rand((-0.5:0.5))
-		y_center = rand((-0.5:0.5))
-		z_center = rand((-0.5:0.5))
+		x_center = rand((-50.0:50.0))
+		y_center = rand((-50.0:50.0))
+		z_center = rand((-50.0:50.0))
 		
 		
-		x_coordinates = rand(Uniform(0.1,0.2), 1, object_number - 1) 
-		y_coordinates = rand(Uniform(0.1,0.2), 1, object_number - 1) 
-		z_coordinates = rand(Uniform(0.1,0.2), 1, object_number - 1) 
+		x_coordinates = rand(Uniform(-5.0,5.0), 1, object_number - 1) 
+		y_coordinates = rand(Uniform(-5.0,5.0), 1, object_number - 1) 
+		z_coordinates = rand(Uniform(-5.0,5.0), 1, object_number - 1) 
 		
 		#get rectangular vector (simiplified)
 		for k in 1:object_number - 1
 			xVel = x_coordinates[k]
 			zVel = 0
 			yVel = - xVel * xVel / y_coordinates[k]
+			
+			#make it smaller
+			xVel = xVel / 20
+			yVel = yVel / 20
 			
 			append!(x_vel_together, xVel)
 			append!(y_vel_together, yVel)
@@ -75,7 +79,7 @@ N = n_of_clusters * n_of_objects_per_cluster
 
 # image size
 n = 512
-dt = 50;
+dt = 1;
 iters = 100;
 
 scale = p -> round.(p .* 3 .+ n/2)
@@ -101,6 +105,9 @@ end
 acc = zeros(N, 3)
 
 for iter in 1:iters
+	#println(vel)
+	
+	toImage(pos, iter);
     for i in 1:N, j in 1:N
         if i != j
             acc[i, :] += (G ./ norm(pos[j, :] - pos[i, :]) ^ 3) .* (pos[j, :] - pos[i, :])
@@ -110,7 +117,6 @@ for iter in 1:iters
     global pos = pos .+ (vel .* dt)
     global acc = zeros(N, 3)
     #scatter3d(pos[:, 1], pos[:, 2], pos[:, 3])
-    toImage(pos, iter);
 end
 
 
