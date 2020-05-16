@@ -4,10 +4,10 @@ using Images
 using Plots
 
 function vector_length(x, y, z)
-	return sqrt(x*x  + y*y + z*z) 
+	return sqrt(x*x + y*y + z*z) 
 end
 
-function generate_starting_conditions(cluster_number, object_number)
+function generate_starting_conditions(cluster_number, object_number, center, radius, initialVel)
 	x_together = []
 	y_together = []
 	z_together = []
@@ -17,52 +17,56 @@ function generate_starting_conditions(cluster_number, object_number)
 	z_vel_together = []
 	
 	m_together = []
+
+    center_mass = 200000
 	
 	for cluster in 1:cluster_number
 		#generate center of the cluster
-		x_center = rand((-50.0:50.0))
-		y_center = rand((-50.0:50.0))
-		z_center = rand((-50.0:50.0))
-		
-		
-		x_coordinates = rand(Uniform(-5.0,5.0), 1, object_number - 1) 
-		y_coordinates = rand(Uniform(-5.0,5.0), 1, object_number - 1) 
-		z_coordinates = rand(Uniform(-5.0,5.0), 1, object_number - 1) 
+		#x_center = rand((-50.0:50.0))
+		#y_center = rand((-50.0:50.0))
+		#z_center = rand((-50.0:50.0))
+
+        x_center = center[cluster, 1]
+        y_center = center[cluster, 2]		
+        z_center = center[cluster, 3]		
+
+		x_coordinates = rand(Uniform(-radius, radius), 1, object_number - 1) 
+		y_coordinates = rand(Uniform(-radius, radius), 1, object_number - 1) 
+		z_coordinates = rand(Uniform(-radius, radius), 1, object_number - 1) 
 		
 		#get rectangular vector (simiplified)
 		for k in 1:object_number - 1
 			xVel = x_coordinates[k]
-			zVel = 0
 			yVel = - xVel * xVel / y_coordinates[k]
+            zVel = rand(Uniform(-abs(xVel), abs(xVel)))
 			
 			#velocity magnitude adjustment
 			vectorL = vector_length(xVel, yVel, zVel)
 			r = vector_length(x_coordinates[k], y_coordinates[k], z_coordinates[k])
-			center_mass = 10.0
+			#center_mass = 1000.0 
 			desired_length = sqrt(center_mass / r)
 			
 			multiplyer = vectorL / desired_length
 			xVel = xVel / multiplyer
 			yVel = yVel / multiplyer
-			
-			
+
 			append!(x_vel_together, xVel)
 			append!(y_vel_together, yVel)
 			append!(z_vel_together, zVel)
 			
 			#mass = vector_length(xVel, yVel, zVel) * vector_length(xVel, yVel, zVel) * vector_length(x_coordinates[k], y_coordinates[k], z_coordinates[k])
 			
-			append!(m_together, 0.00000000000001)
+			append!(m_together, 1) 
 			
 		end
 		
 		#center of the cluster
-		append!(m_together, 10.0)
+		append!(m_together, center_mass) 
 		
 		
-		append!(x_vel_together, 0)
-		append!(y_vel_together, 0)
-		append!(z_vel_together, 0)
+        append!(x_vel_together, initialVel[cluster, 1])
+		append!(y_vel_together, initialVel[cluster, 2])
+		append!(z_vel_together, initialVel[cluster, 3])
 		
 		
 		x_coordinates = x_coordinates .+ x_center
@@ -80,40 +84,64 @@ function generate_starting_conditions(cluster_number, object_number)
 		
 		
 	end
-	
-	return x_together, y_together, z_together, x_vel_together, y_vel_together, z_vel_together, m_together
+
+
+	return x_together, y_together, z_together, 
+           x_vel_together, y_vel_together, z_vel_together, 
+           m_together
 end
 
 
-println("enter number of clusters")
-n_of_clusters = parse(UInt8, readline())
+n_of_clusters = 2
+n_of_objects_per_cluster = 30
 
-println("enter number of object per cluster")
-n_of_objects_per_cluster = parse(UInt8, readline())
+# začetne lokacije centrov galaksij
+centers = [-100 -100 0;
+            100  100 0]
 
-pos_x, pos_y, pos_z, vel_x, vel_y, vel_z, M = generate_starting_conditions(n_of_clusters, n_of_objects_per_cluster)
+# začetna hitrost centrov galaksij
+initialVel = [1 0 0;
+             -1 0 0] .* 0.01
+
+# radij sfere znotraj katere se naključno generirajo planeti
+radius = 30
+
+pos_x, pos_y, pos_z, vel_x, vel_y, vel_z, M = 
+    generate_starting_conditions(n_of_clusters, n_of_objects_per_cluster, 
+                                 centers, radius, initialVel)
+
+
 pos = [pos_x' ; pos_y' ; pos_z']'
 vel = [vel_x' ; vel_y' ; vel_z']'
 
-G = 1
+pos = pos .* 0.1
+vel = vel .* 10
+
+
+G = 10
 N = n_of_clusters * n_of_objects_per_cluster
 
 # image size
 n = 512
-dt = 3;
-iters = 100;
 
-scale = p -> round.(p .* 3 .+ n/2)
+# dolžina koraka Eulerjeve metode
+dt = 0.0005
+
+iters = 250;
+
+scale = p -> round.(p .* 10 .+ n/2)
+
 
 #project = p -> [p[1], p[2]] ./ (p[3] + 1)
 project = p -> [p[1], p[2]]
+
 
 function toImage(pos, frame_number)
     img = zeros(3, n, n)
 
     for i = 1:N
         xy1 = project(pos[i, :]) 
-        xy = scale(xy1) .|> (Integer ∘round)
+        xy = scale(xy1) .|> (Integer ∘ round)
 
         if (xy[1] >= 1 && xy[1] <= n && xy[2] >= 1 && xy[2] <= n)
             img[:, xy[1], xy[2]] = [1, 1, 1]
@@ -123,21 +151,29 @@ function toImage(pos, frame_number)
     save("frame$(1000 + frame_number).png", colorview(RGB, img))
 end
 
+
+# minimalna razdalja, s katero se računa pospešek
+# brez te omejitve dobijo telesa ogromen pospešek
+# in pobegnejo iz orbite
+min_distance = 2
+
 acc = zeros(N, 3)
 
 for iter in 1:iters
-	#println(vel)
 	
 	toImage(pos, iter);
+
     for i in 1:N, j in 1:N
         if i != j
-            acc[i, :] += (G * M[j] ./ norm(pos[j, :] - pos[i, :]) ^ 3) .* (pos[j, :] - pos[i, :])
+            dist = norm(pos[j, :] - pos[i, :])
+            dist = max(dist, min_distance) 
+            acc[i, :] += (G * M[j] ./ (dist .^ 3)) .* (pos[j, :] - pos[i, :])
         end
     end
+
     global vel = vel .+ (acc .* dt)
     global pos = pos .+ (vel .* dt)
     global acc = zeros(N, 3)
-    #scatter3d(pos[:, 1], pos[:, 2], pos[:, 3])
 end
 
 
