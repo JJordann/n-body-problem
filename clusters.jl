@@ -118,6 +118,9 @@ pos = pos .* 0.1
 vel = vel .* 10
 
 
+
+display(pos[:, 3])
+
 G = 10
 N = n_of_clusters * n_of_objects_per_cluster
 
@@ -125,16 +128,17 @@ N = n_of_clusters * n_of_objects_per_cluster
 n = 512
 
 # dolžina koraka Eulerjeve metode
-dt = 0.0005
+dt = 0.0001
 
 iters = 250;
 
-scale = p -> round.(p .* 10 .+ n/2)
+scale = p -> round.(p .* 5 .+ n/2)
 
+z_plane = 0
 
-#project = p -> [p[1], p[2]] ./ (p[3] + 1)
-project = p -> [p[1], p[2]]
-
+project = p -> [p[1], p[2]] ./ (p[3] + 0.001)
+#project = p -> [p[1], p[2]]
+distanceToIntensity = p -> (1 / abs(p + z_plane))
 
 function toImage(pos, frame_number)
     img = zeros(3, n, n)
@@ -142,9 +146,11 @@ function toImage(pos, frame_number)
     for i = 1:N
         xy1 = project(pos[i, :]) 
         xy = scale(xy1) .|> (Integer ∘ round)
+        intensity = distanceToIntensity(pos[i, 3])
 
-        if (xy[1] >= 1 && xy[1] <= n && xy[2] >= 1 && xy[2] <= n)
-            img[:, xy[1], xy[2]] = [1, 1, 1]
+        if (xy[1] >= 1 && xy[1] <= n && xy[2] >= 1 && xy[2] <= n && intensity > 0 && pos[i, 3] > z_plane)
+            img[:, xy[1], xy[2]] += ([1.0, 1.0, 1.0] .* intensity)
+            img[:, xy[1], xy[2]] = img[:, xy[1], xy[2]] .|> (p -> p > 1 ? 1 : p)
         end
     end
 
