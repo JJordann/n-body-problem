@@ -1,7 +1,8 @@
-using Distributions
 using LinearAlgebra
+using Distributions
+using Distributed
 using Images
-using Plots
+using SharedArrays
 
 function vector_length(x, y, z)
 	return sqrt(x*x + y*y + z*z) 
@@ -92,88 +93,98 @@ function generate_starting_conditions(cluster_number, object_number, center, rad
 end
 
 
-n_of_clusters = 2
-n_of_objects_per_cluster = 30
+function main() 
+    n_of_clusters = 2
+    n_of_objects_per_cluster = 75
 
-# začetne lokacije centrov galaksij
-centers = [-100 -100 0;
-            100  100 0]
+    # začetne lokacije centrov galaksij
+    centers = [-100 -100 0;
+                100  100 0]
 
-# začetna hitrost centrov galaksij
-initialVel = [1 0 0;
-             -1 0 0] .* 0.01
+    # začetna hitrost centrov galaksij
+    initialVel = [1 0 0;
+                 -1 0 0] .* 0.01
 
-# radij sfere znotraj katere se naključno generirajo planeti
-radius = 30
+    # radij sfere znotraj katere se naključno generirajo planeti
+    radius = 30
 
-pos_x, pos_y, pos_z, vel_x, vel_y, vel_z, M = 
-    generate_starting_conditions(n_of_clusters, n_of_objects_per_cluster, 
-                                 centers, radius, initialVel)
-
-
-pos = [pos_x' ; pos_y' ; pos_z']'
-vel = [vel_x' ; vel_y' ; vel_z']'
-
-pos = pos .* 0.1
-vel = vel .* 10
+    pos_x, pos_y, pos_z, vel_x, vel_y, vel_z, M = 
+        generate_starting_conditions(n_of_clusters, n_of_objects_per_cluster, 
+                                     centers, radius, initialVel)
 
 
-G = 10
-N = n_of_clusters * n_of_objects_per_cluster
+    pos = [pos_x' ; pos_y' ; pos_z']'
+    vel = [vel_x' ; vel_y' ; vel_z']'
 
-# image size
-n = 512
-
-# dolžina koraka Eulerjeve metode
-dt = 0.0005
-
-iters = 250;
-
-scale = p -> round.(p .* 10 .+ n/2)
+    pos = convert(SharedArray, pos .* 0.1)
+    vel = convert(SharedArray, vel .* 10)
 
 
-#project = p -> [p[1], p[2]] ./ (p[3] + 1)
-project = p -> [p[1], p[2]]
+    G = 10
+    N = n_of_clusters * n_of_objects_per_cluster
+
+    # image size
+    n = 512
+
+    # dolžina koraka Eulerjeve metode
+    dt = 0.0001
+
+    iters = 100;
+
+    scale = p -> round.(p .* 10 .+ n/2)
 
 
-function toImage(pos, frame_number)
-    img = zeros(3, n, n)
+    #project = p -> [p[1], p[2]] ./ (p[3] + 1)
+    project = p -> [p[1], p[2]]
 
-    for i = 1:N
-        xy1 = project(pos[i, :]) 
-        xy = scale(xy1) .|> (Integer ∘ round)
 
-        if (xy[1] >= 1 && xy[1] <= n && xy[2] >= 1 && xy[2] <= n)
-            img[:, xy[1], xy[2]] = [1, 1, 1]
+    function toImage(pos, frame_number)
+        img = zeros(3, n, n)
+
+        for i = 1:N
+            xy1 = project(pos[i, :]) 
+            xy = scale(xy1) .|> (Integer ∘ round)
+
+            if (xy[1] >= 1 && xy[1] <= n && xy[2] >= 1 && xy[2] <= n)
+                img[:, xy[1], xy[2]] = [1, 1, 1]
+            end
         end
+
+        save("frame$(1000 + frame_number).png", colorview(RGB, img))
     end
 
-    save("frame$(1000 + frame_number).png", colorview(RGB, img))
-end
 
+    # minimalna razdalja, s katero se računa pospešek
+    # brez te omejitve dobijo telesa ogromen pospešek
+    # in pobegnejo iz orbite
+    min_distance = 2
 
-# minimalna razdalja, s katero se računa pospešek
-# brez te omejitve dobijo telesa ogromen pospešek
-# in pobegnejo iz orbite
-min_distance = 2
+    for iter in 1:iters
+        
+        toImage(pos, iter);
+        
+        acc = step(M, G, pos, vel, dt, N, min_distance)
 
-acc = zeros(N, 3)
-
-for iter in 1:iters
-	
-	toImage(pos, iter);
-
-    for i in 1:N, j in 1:N
-        if i != j
-            dist = norm(pos[j, :] - pos[i, :])
-            dist = max(dist, min_distance) 
-            acc[i, :] += (G * M[j] ./ (dist .^ 3)) .* (pos[j, :] - pos[i, :])
-        end
+        # TODO naredi to na bolj eleganten način
+        vel = convert(SharedArray, vel .+ (acc .* dt))
+        pos = convert(SharedArray, pos .+ (vel .* dt))
     end
 
-    global vel = vel .+ (acc .* dt)
-    global pos = pos .+ (vel .* dt)
-    global acc = zeros(N, 3)
+end # main
+
+@everywhere function step(M, G, pos::SharedArray, vel::SharedArray, dt, N, min_distance)
+    acc = convert(SharedArray, zeros(N, 3))
+    @inbounds @sync @distributed for i in 1:N
+       for j in 1:N
+            if i != j
+                dist = norm(pos[j, :] - pos[i, :])
+                dist = max(dist, min_distance) 
+                acc[i, :] += (G * M[j] ./ (dist .^ 3)) .* (pos[j, :] - pos[i, :])
+            end
+        end
+    end
+   return acc 
 end
+
 
 
