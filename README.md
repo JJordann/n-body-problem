@@ -1,4 +1,13 @@
-# n-body-problem
+# Million Body Problem
+
+### Poganjanje programov na več jedrih (primer za 4 jedra)
+```julia
+$ export JULIA_NUM_THREADS=4
+$ julia -p 4
+julia> @everywhere include("clusters.jl")
+julia> @time main()
+```
+
 ## Primer za naše (nepopolno) osončje
 ![gif](test2.gif)
 
