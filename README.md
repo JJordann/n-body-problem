@@ -15,3 +15,4 @@
 ## Primer za 2000 teles
 ![gif](pobarvani_big_slow.gif)
 ![gif](pobarvani2000.gif)
+![gif](mimobezni2000.gif)
