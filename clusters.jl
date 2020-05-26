@@ -24,7 +24,6 @@ function generate_starting_conditions(cluster_number, object_number, center, rad
     min_distance = 10
 
     center_mass = 200000
-    #center_mass = 2000
 	
 	for cluster in 1:cluster_number
         x_center = center[cluster, 1]
@@ -99,7 +98,7 @@ end
 
 function main() 
     n_of_clusters = 2
-    n_of_objects_per_cluster = 250
+    n_of_objects_per_cluster = 1000
 
     # image size
     n = 512 + 256
@@ -107,7 +106,7 @@ function main()
     # dolžina koraka Eulerjeve metode
     dt = 0.0005
 
-    iters = 500;
+    iters = 50;
 
     G = 10
     N = n_of_clusters * n_of_objects_per_cluster
@@ -116,58 +115,34 @@ function main()
     radius = 150
 
 
+    ####### primer za galaksiji ki trčita ###############
     # začetne lokacije centrov galaksij
-    #centers = [-100 -100 0;
-    #            100  100 0]
+    centers = [-100 -100 0;
+                100  100 0]
 
-    ## začetna hitrost centrov galaksij
-    #initialVel = [1 0 0;
-    #             -1 0 0] .* 0.01
+    # začetna hitrost centrov galaksij
+    initialVel = [1 0 0;
+                 -1 0 0] .* 0.01
+    #####################################################
 
 
-    centers = [-150 -150 0;
-                150  150 0]
+    ####### primer za mimobežni galaksiji ###############
+    #centers = [-150 -150 0;
+    #            150  150 0]
 
-    initialVel = [1 -0.75 0;
-                 -1  0.75 0] .* 15.0 
+    #initialVel = [1 -0.75 0;
+    #             -1  0.75 0] .* 15.0 
+    #####################################################
 
     pos_x, pos_y, pos_z, vel_x, vel_y, vel_z, M = 
         generate_starting_conditions(n_of_clusters, n_of_objects_per_cluster, 
                                      centers, radius, initialVel)
-
 
     pos = [pos_x' ; pos_y' ; pos_z']' .* 0.1
     vel = [vel_x' ; vel_y' ; vel_z']' .* 10.0
 
     pos = convert(SharedArray, pos)
     vel = convert(SharedArray, vel)
-
-
-    # skalira točko tako, da je (0, 0) na sredini slike
-    # (in da so razdalje med njimi malo večje)
-    scale = p -> round.(p .* 10 .+ n/2)
-
-    # projekcija 3D točke na 2D ravnino
-    project = p -> [p[1], p[2]]
-    #project = p -> [p[1], p[2]] ./ (p[3] + 1)
-
-
-    function toImage(pos, frame_number)
-        img = zeros(3, n, n)
-
-        for i = 1:N
-            intensity = 1 / (1 + pos[i, 3]) |> abs
-            intensity = intensity > 1 ? 1 : intensity
-            xy1 = project(pos[i, :]) 
-            xy = scale(xy1) .|> (Integer ∘ round)
-
-            if (xy[1] >= 1 && xy[1] <= n && xy[2] >= 1 && xy[2] <= n)
-                img[:, xy[1], xy[2]] = [1, 1, 1] .* intensity
-            end
-        end
-
-        save("frame$(1000 + frame_number).png", colorview(RGB, img))
-    end
 
 
     # minimalna razdalja, s katero se računa pospešek
@@ -177,15 +152,50 @@ function main()
 
     for iter in 1:iters
         
-        toImage(pos, iter);
+        toImage(n, pos, iter, vel);
         
         acc = step(M, G, pos, vel, dt, N, min_distance)
 
         vel[:, :] = vel .+ (acc .* dt)
         pos[:, :] = pos .+ (vel .* dt)
+        
+        display("$iter/$iters")
     end
 
 end # main
+
+
+
+
+function toImage(n, pos, frame_number, velocity)
+    
+    # skalira točko tako, da je (0, 0) na sredini slike
+    # (in da so razdalje med njimi malo večje)
+    scale = p -> round.(p .* 10 .+ n/2)
+
+    # projekcija 3D točke na 2D ravnino
+    project = p -> [p[1], p[2]]
+    #project = p -> [p[1], p[2]] ./ (p[3] + 1)
+    
+    img = zeros(3, n, n)
+
+    for i = 1:length(pos[:, 1, 1])
+        intensity = 1 / (1 + pos[i, 3]) |> abs
+        intensity = intensity > 1 ? 1 : intensity
+        vel1 = velocity[i, :] |> norm
+        colour = min(1, (vel1 / 2500))
+
+        xy1 = project(pos[i, :]) 
+        xy = scale(xy1) .|> (Integer ∘ round)
+
+        if (xy[1] >= 1 && xy[1] <= n && xy[2] >= 1 && xy[2] <= n)
+            img[:, xy[1], xy[2]] += ([1, 1, 1] - [0, 1, 1] .* colour) .* intensity
+            img[:, xy[1], xy[2]] = img[:, xy[1], xy[2]] .|> (c -> c > 1 ? 1 : c)
+        end
+    end
+
+    save("frame$(1000 + frame_number).png", colorview(RGB, img))
+end
 
 
 @everywhere function step(M, G, pos::SharedArray, vel::SharedArray, dt, N, min_distance)
