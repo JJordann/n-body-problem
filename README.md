@@ -9,3 +9,4 @@
 ![gif](out2.gif)
 
 ## Primer za mimobežni galaksiji (500 teles)
+![gif](mimobezni.gif)
