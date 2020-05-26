@@ -22,11 +22,6 @@ function generate_starting_conditions(cluster_number, object_number, center, rad
     center_mass = 200000
 	
 	for cluster in 1:cluster_number
-		#generate center of the cluster
-		#x_center = rand((-50.0:50.0))
-		#y_center = rand((-50.0:50.0))
-		#z_center = rand((-50.0:50.0))
-
         x_center = center[cluster, 1]
         y_center = center[cluster, 2]		
         z_center = center[cluster, 3]		
@@ -55,8 +50,6 @@ function generate_starting_conditions(cluster_number, object_number, center, rad
 			append!(y_vel_together, yVel)
 			append!(z_vel_together, zVel)
 			
-			#mass = vector_length(xVel, yVel, zVel) * vector_length(xVel, yVel, zVel) * vector_length(x_coordinates[k], y_coordinates[k], z_coordinates[k])
-			
 			append!(m_together, 1) 
 			
 		end
@@ -64,11 +57,9 @@ function generate_starting_conditions(cluster_number, object_number, center, rad
 		#center of the cluster
 		append!(m_together, center_mass) 
 		
-		
         append!(x_vel_together, initialVel[cluster, 1])
 		append!(y_vel_together, initialVel[cluster, 2])
 		append!(z_vel_together, initialVel[cluster, 3])
-		
 		
 		x_coordinates = x_coordinates .+ x_center
 		y_coordinates = y_coordinates .+ y_center
@@ -82,10 +73,8 @@ function generate_starting_conditions(cluster_number, object_number, center, rad
 		
 		append!(z_together, z_coordinates)
 		append!(z_together, z_center)
-		
-		
-	end
 
+	end
 
 	return x_together, y_together, z_together, 
            x_vel_together, y_vel_together, z_vel_together, 
@@ -113,11 +102,11 @@ function main()
                                      centers, radius, initialVel)
 
 
-    pos = [pos_x' ; pos_y' ; pos_z']'
-    vel = [vel_x' ; vel_y' ; vel_z']'
+    pos = [pos_x' ; pos_y' ; pos_z']' .* 0.1
+    vel = [vel_x' ; vel_y' ; vel_z']' .* 10
 
-    pos = convert(SharedArray, pos .* 0.1)
-    vel = convert(SharedArray, vel .* 10)
+    pos = convert(SharedArray, pos)
+    vel = convert(SharedArray, vel)
 
 
     G = 10
@@ -131,22 +120,26 @@ function main()
 
     iters = 100;
 
+    # skalira točko tako, da je (0, 0) na sredini slike
+    # (in da so razdalje med njimi malo večje)
     scale = p -> round.(p .* 10 .+ n/2)
 
-
-    #project = p -> [p[1], p[2]] ./ (p[3] + 1)
+    # projekcija 3D točke na 2D ravnino
     project = p -> [p[1], p[2]]
+    #project = p -> [p[1], p[2]] ./ (p[3] + 1)
 
 
     function toImage(pos, frame_number)
         img = zeros(3, n, n)
 
         for i = 1:N
+            intensity = 1 / (1 + pos[i, 3]) |> abs
+            intensity = intensity > 1 ? 1 : intensity
             xy1 = project(pos[i, :]) 
             xy = scale(xy1) .|> (Integer ∘ round)
 
             if (xy[1] >= 1 && xy[1] <= n && xy[2] >= 1 && xy[2] <= n)
-                img[:, xy[1], xy[2]] = [1, 1, 1]
+                img[:, xy[1], xy[2]] = [1, 1, 1] .* intensity
             end
         end
 
@@ -165,12 +158,12 @@ function main()
         
         acc = step(M, G, pos, vel, dt, N, min_distance)
 
-        # TODO naredi to na bolj eleganten način
-        vel = convert(SharedArray, vel .+ (acc .* dt))
-        pos = convert(SharedArray, pos .+ (vel .* dt))
+        vel[:, :] = vel .+ (acc .* dt)
+        pos[:, :] = pos .+ (vel .* dt)
     end
 
 end # main
+
 
 @everywhere function step(M, G, pos::SharedArray, vel::SharedArray, dt, N, min_distance)
     acc = convert(SharedArray, zeros(N, 3))
