@@ -4,3 +4,6 @@
 
 ## Primer za dve gruči po 30 teles, ki trčita
 ![gif](60teles.gif)
+
+## Primer za dve gruči po 75 teles, ki trčita
+![gif](out2.gif)
