@@ -19,18 +19,33 @@ function generate_starting_conditions(cluster_number, object_number, center, rad
 	
 	m_together = []
 
+    # najmanjša dovoljena razvalja od središča
+    # gruče do generiranega telesa
+    min_distance = 10
+
     center_mass = 200000
+    #center_mass = 2000
 	
 	for cluster in 1:cluster_number
         x_center = center[cluster, 1]
         y_center = center[cluster, 2]		
         z_center = center[cluster, 3]		
 
-		x_coordinates = rand(Uniform(-radius, radius), 1, object_number - 1) 
-		y_coordinates = rand(Uniform(-radius, radius), 1, object_number - 1) 
-		z_coordinates = rand(Uniform(-radius, radius), 1, object_number - 1) 
+        # generiranje naključne točke znotraj sfere z r = radius
+        r = rand(Uniform(min_distance, radius), 1, object_number - 1) 
+        α = rand(Uniform(0, 2π), 1, object_number - 1)
+        β = rand(Uniform(0, 2π), 1, object_number - 1)
+
+        # pretvorba polarnih koordinat v kartezijske
+        x_coordinates = r .* sin.(α) .* cos.(β)
+        y_coordinates = r .* sin.(α) .* sin.(β)
+        z_coordinates = r .* cos.(α)
+
+		#x_coordinates = rand(Uniform(-radius, radius), 1, object_number - 1) 
+		#y_coordinates = rand(Uniform(-radius, radius), 1, object_number - 1) 
+		#z_coordinates = rand(Uniform(-radius, radius), 1, object_number - 1) 
 		
-		#get rectangular vector (simiplified)
+		#get rectangular vector (simplified)
 		for k in 1:object_number - 1
 			xVel = x_coordinates[k]
 			yVel = - xVel * xVel / y_coordinates[k]
@@ -84,29 +99,37 @@ end
 
 function main() 
     n_of_clusters = 2
-    n_of_objects_per_cluster = 75
+    n_of_objects_per_cluster = 250
 
     # image size
-    n = 512
+    n = 512 + 256
 
     # dolžina koraka Eulerjeve metode
-    dt = 0.0002
+    dt = 0.0005
 
-    iters = 1000;
+    iters = 500;
 
     G = 10
     N = n_of_clusters * n_of_objects_per_cluster
 
-    # začetne lokacije centrov galaksij
-    centers = [-100 -100 0;
-                100  100 0]
-
-    # začetna hitrost centrov galaksij
-    initialVel = [1 0 0;
-                 -1 0 0] .* 0.01
-
     # radij sfere znotraj katere se naključno generirajo planeti
-    radius = 30
+    radius = 150
+
+
+    # začetne lokacije centrov galaksij
+    #centers = [-100 -100 0;
+    #            100  100 0]
+
+    ## začetna hitrost centrov galaksij
+    #initialVel = [1 0 0;
+    #             -1 0 0] .* 0.01
+
+
+    centers = [-150 -150 0;
+                150  150 0]
+
+    initialVel = [1 -0.75 0;
+                 -1  0.75 0] .* 15.0 
 
     pos_x, pos_y, pos_z, vel_x, vel_y, vel_z, M = 
         generate_starting_conditions(n_of_clusters, n_of_objects_per_cluster, 
@@ -114,7 +137,7 @@ function main()
 
 
     pos = [pos_x' ; pos_y' ; pos_z']' .* 0.1
-    vel = [vel_x' ; vel_y' ; vel_z']' .* 10
+    vel = [vel_x' ; vel_y' ; vel_z']' .* 10.0
 
     pos = convert(SharedArray, pos)
     vel = convert(SharedArray, vel)
