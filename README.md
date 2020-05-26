@@ -7,3 +7,5 @@
 
 ## Primer za dve gruči po 75 teles, ki trčita
 ![gif](out2.gif)
+
+## Primer za mimobežni galaksiji (500 teles)
