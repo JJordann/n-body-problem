@@ -86,6 +86,17 @@ function main()
     n_of_clusters = 2
     n_of_objects_per_cluster = 75
 
+    # image size
+    n = 512
+
+    # dolžina koraka Eulerjeve metode
+    dt = 0.0002
+
+    iters = 1000;
+
+    G = 10
+    N = n_of_clusters * n_of_objects_per_cluster
+
     # začetne lokacije centrov galaksij
     centers = [-100 -100 0;
                 100  100 0]
@@ -108,17 +119,6 @@ function main()
     pos = convert(SharedArray, pos)
     vel = convert(SharedArray, vel)
 
-
-    G = 10
-    N = n_of_clusters * n_of_objects_per_cluster
-
-    # image size
-    n = 512
-
-    # dolžina koraka Eulerjeve metode
-    dt = 0.0001
-
-    iters = 100;
 
     # skalira točko tako, da je (0, 0) na sredini slike
     # (in da so razdalje med njimi malo večje)
