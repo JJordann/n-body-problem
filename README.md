@@ -10,3 +10,7 @@
 
 ## Primer za mimobežni galaksiji (500 teles)
 ![gif](mimobezni.gif)
+
+
+## Primer za 2000 teles
+![gif](pobarvani_big_slow.gif)
