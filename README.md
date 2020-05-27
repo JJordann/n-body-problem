@@ -7,6 +7,13 @@ $ julia -p 4
 julia> include("clusters.jl")
 julia> @time main()
 ```
+### Izdelava animacije
+```bash
+FPS=20
+convert -delay 1x$FPS frame????.png out.gif
+```
+
+
 
 ## Primer za naše (nepopolno) osončje
 ![gif](test2.gif)
