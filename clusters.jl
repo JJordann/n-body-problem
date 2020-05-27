@@ -1,8 +1,8 @@
-using LinearAlgebra
 using Distributions
 using Distributed
 using Images
-using SharedArrays
+@everywhere using LinearAlgebra
+@everywhere using SharedArrays
 
 function vector_length(x, y, z)
 	return sqrt(x*x + y*y + z*z) 
@@ -106,7 +106,7 @@ function main()
     # dolžina koraka Eulerjeve metode
     dt = 0.0005
 
-    iters = 50;
+    iters = 650;
 
     G = 10
     N = n_of_clusters * n_of_objects_per_cluster
@@ -115,24 +115,24 @@ function main()
     radius = 150
 
 
-    ####### primer za galaksiji ki trčita ###############
-    # začetne lokacije centrov galaksij
-    centers = [-100 -100 0;
-                100  100 0]
+    ######## primer za galaksiji ki trčita ###############
+    ## začetne lokacije centrov galaksij
+    #centers = [-165 -165 0;
+    #            165  165 0]
 
-    # začetna hitrost centrov galaksij
-    initialVel = [1 0 0;
-                 -1 0 0] .* 0.01
-    #####################################################
+    ## začetna hitrost centrov galaksij
+    #initialVel = [1 0 0;
+    #             -1 0 0] .* 0.01
+    ######################################################
 
 
-    ####### primer za mimobežni galaksiji ###############
-    #centers = [-150 -150 0;
-    #            150  150 0]
+    ###### primer za mimobežni galaksiji ###############
+    centers = [-165 -165 0;
+                165  165 0]
 
-    #initialVel = [1 -0.75 0;
-    #             -1  0.75 0] .* 15.0 
-    #####################################################
+    initialVel = [1 -0.75 0;
+                 -1  0.75 0] .* 15.0 
+    ####################################################
 
     pos_x, pos_y, pos_z, vel_x, vel_y, vel_z, M = 
         generate_starting_conditions(n_of_clusters, n_of_objects_per_cluster, 
