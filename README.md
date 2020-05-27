@@ -9,8 +9,8 @@ julia> @time main()
 ```
 ### Izdelava animacije
 ```bash
-FPS=20
-convert -delay 1x$FPS frame????.png out.gif
+$ FPS=20
+$ convert -delay 1x$FPS frame????.png out.gif
 ```
 
 
