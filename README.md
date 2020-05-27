@@ -4,7 +4,7 @@
 ```julia
 $ export JULIA_NUM_THREADS=4
 $ julia -p 4
-julia> @everywhere include("clusters.jl")
+julia> include("clusters.jl")
 julia> @time main()
 ```
 
