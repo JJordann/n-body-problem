@@ -40,10 +40,6 @@ function generate_starting_conditions(cluster_number, object_number, center, rad
         y_coordinates = r .* sin.(α) .* sin.(β)
         z_coordinates = r .* cos.(α)
 
-		#x_coordinates = rand(Uniform(-radius, radius), 1, object_number - 1) 
-		#y_coordinates = rand(Uniform(-radius, radius), 1, object_number - 1) 
-		#z_coordinates = rand(Uniform(-radius, radius), 1, object_number - 1) 
-		
 		#get rectangular vector (simplified)
 		for k in 1:object_number - 1
 			xVel = x_coordinates[k]
@@ -163,8 +159,6 @@ function main()
     end
 
 end # main
-
-
 
 
 function toImage(n, pos, frame_number, velocity)
