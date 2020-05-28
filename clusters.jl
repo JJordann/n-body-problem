@@ -204,7 +204,7 @@ end
        for j in 1:N
             if i != j
                 dist = norm(pos[j, :] - pos[i, :])
-                dist = max(dist, min_distance) 
+                #dist = max(dist, min_distance) 
                 acc[i, :] += (G * M[j] ./ (dist .^ 3)) .* (pos[j, :] - pos[i, :])
             end
         end
