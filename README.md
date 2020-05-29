@@ -4,9 +4,16 @@
 ```julia
 $ export JULIA_NUM_THREADS=4
 $ julia -p 4
-julia> @everywhere include("clusters.jl")
+julia> include("clusters.jl")
 julia> @time main()
 ```
+### Izdelava animacije
+```bash
+$ FPS=20
+$ convert -delay 1x$FPS frame????.png out.gif
+```
+
+
 
 ## Primer za naše (nepopolno) osončje
 ![gif](test2.gif)
