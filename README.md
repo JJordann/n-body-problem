@@ -21,3 +21,15 @@ julia> @time main()
 
 ### Vrtilna količina sistema dveh druč teles, ki trčita
 ![img](momentum-two-clusters.png)
+
+## Primer za dve gruči po 75 teles, ki trčita
+![gif](out2.gif)
+
+## Primer za mimobežni galaksiji (500 teles)
+![gif](mimobezni.gif)
+
+
+## Primer za 2000 teles
+![gif](pobarvani_big_slow.gif)
+![gif](pobarvani2000.gif)
+![gif](mimobezni2000.gif)
