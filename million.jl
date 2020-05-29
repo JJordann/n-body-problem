@@ -4,94 +4,6 @@ using Images
 @everywhere using LinearAlgebra
 @everywhere using SharedArrays
 
-function vector_length(x, y, z)
-	return sqrt(x*x + y*y + z*z) 
-end
-
-function generate_starting_conditions(cluster_number, object_number, center, radius, initialVel)
-	x_together = []
-	y_together = []
-	z_together = []
-	
-	x_vel_together = []
-	y_vel_together = []
-	z_vel_together = []
-	
-	m_together = []
-
-    # najmanjša dovoljena razvalja od središča
-    # gruče do generiranega telesa
-    min_distance = 10
-
-    center_mass = 200000
-	
-	for cluster in 1:cluster_number
-        x_center = center[cluster, 1]
-        y_center = center[cluster, 2]		
-        z_center = center[cluster, 3]		
-
-        # generiranje naključne točke znotraj sfere z r = radius
-        r = rand(Uniform(min_distance, radius), 1, object_number - 1) 
-        α = rand(Uniform(0, 2π), 1, object_number - 1)
-        β = rand(Uniform(0, 2π), 1, object_number - 1)
-
-        # pretvorba polarnih koordinat v kartezijske
-        x_coordinates = r .* sin.(α) .* cos.(β)
-        y_coordinates = r .* sin.(α) .* sin.(β)
-        z_coordinates = r .* cos.(α)
-
-		#get rectangular vector (simplified)
-		for k in 1:object_number - 1
-			xVel = x_coordinates[k]
-			yVel = - xVel * xVel / y_coordinates[k]
-            zVel = rand(Uniform(-abs(xVel), abs(xVel)))
-			
-			#velocity magnitude adjustment
-			vectorL = vector_length(xVel, yVel, zVel)
-			r = vector_length(x_coordinates[k], y_coordinates[k], z_coordinates[k])
-			#center_mass = 1000.0 
-			desired_length = sqrt(center_mass / r)
-			
-			multiplyer = vectorL / desired_length
-			xVel = xVel / multiplyer
-			yVel = yVel / multiplyer
-
-			append!(x_vel_together, xVel)
-			append!(y_vel_together, yVel)
-			append!(z_vel_together, zVel)
-			
-			append!(m_together, 1) 
-			
-		end
-		
-		#center of the cluster
-		append!(m_together, center_mass) 
-		
-        append!(x_vel_together, initialVel[cluster, 1])
-		append!(y_vel_together, initialVel[cluster, 2])
-		append!(z_vel_together, initialVel[cluster, 3])
-		
-		x_coordinates = x_coordinates .+ x_center
-		y_coordinates = y_coordinates .+ y_center
-		z_coordinates = z_coordinates .+ z_center
-		
-		append!(x_together, x_coordinates)
-		append!(x_together, x_center)
-		
-		append!(y_together, y_coordinates)
-		append!(y_together, y_center)
-		
-		append!(z_together, z_coordinates)
-		append!(z_together, z_center)
-
-	end
-
-	return x_together, y_together, z_together, 
-           x_vel_together, y_vel_together, z_vel_together, 
-           m_together
-end
-
-
 function main() 
     n_of_clusters = 2
     n_of_objects_per_cluster = 1000
@@ -204,6 +116,95 @@ end
         end
     end
    return acc 
+end
+
+
+function vector_length(x, y, z)
+	return sqrt(x*x + y*y + z*z) 
+end
+
+
+function generate_starting_conditions(cluster_number, object_number, center, radius, initialVel)
+	x_together = []
+	y_together = []
+	z_together = []
+	
+	x_vel_together = []
+	y_vel_together = []
+	z_vel_together = []
+	
+	m_together = []
+
+    # najmanjša dovoljena razvalja od središča
+    # gruče do generiranega telesa
+    min_distance = 10
+
+    center_mass = 200000
+	
+	for cluster in 1:cluster_number
+        x_center = center[cluster, 1]
+        y_center = center[cluster, 2]		
+        z_center = center[cluster, 3]		
+
+        # generiranje naključne točke znotraj sfere z r = radius
+        r = rand(Uniform(min_distance, radius), 1, object_number - 1) 
+        α = rand(Uniform(0, 2π), 1, object_number - 1)
+        β = rand(Uniform(0, 2π), 1, object_number - 1)
+
+        # pretvorba polarnih koordinat v kartezijske
+        x_coordinates = r .* sin.(α) .* cos.(β)
+        y_coordinates = r .* sin.(α) .* sin.(β)
+        z_coordinates = r .* cos.(α)
+
+		#get rectangular vector (simplified)
+		for k in 1:object_number - 1
+			xVel = x_coordinates[k]
+			yVel = - xVel * xVel / y_coordinates[k]
+            zVel = rand(Uniform(-abs(xVel), abs(xVel)))
+			
+			#velocity magnitude adjustment
+			vectorL = vector_length(xVel, yVel, zVel)
+			r = vector_length(x_coordinates[k], y_coordinates[k], z_coordinates[k])
+			#center_mass = 1000.0 
+			desired_length = sqrt(center_mass / r)
+			
+			multiplyer = vectorL / desired_length
+			xVel = xVel / multiplyer
+			yVel = yVel / multiplyer
+
+			append!(x_vel_together, xVel)
+			append!(y_vel_together, yVel)
+			append!(z_vel_together, zVel)
+			
+			append!(m_together, 1) 
+			
+		end
+		
+		#center of the cluster
+		append!(m_together, center_mass) 
+		
+        append!(x_vel_together, initialVel[cluster, 1])
+		append!(y_vel_together, initialVel[cluster, 2])
+		append!(z_vel_together, initialVel[cluster, 3])
+		
+		x_coordinates = x_coordinates .+ x_center
+		y_coordinates = y_coordinates .+ y_center
+		z_coordinates = z_coordinates .+ z_center
+		
+		append!(x_together, x_coordinates)
+		append!(x_together, x_center)
+		
+		append!(y_together, y_coordinates)
+		append!(y_together, y_center)
+		
+		append!(z_together, z_coordinates)
+		append!(z_together, z_center)
+
+	end
+
+	return x_together, y_together, z_together, 
+           x_vel_together, y_vel_together, z_vel_together, 
+           m_together
 end
 
 
