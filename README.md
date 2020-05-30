@@ -62,7 +62,7 @@ poljubno število gruč.
 
 ###  Optimizacija 
 Numerično reševanje tega sistema enačb je zelo časovno potratna, sploh pri 
-večjem številu teles. Časovna kompleksnost računanje enega koraka je namreč O(n^2). 
+večjem številu teles. Časovna kompleksnost računanje enega koraka v odvisnosti od števila teles je namreč O(n²). 
 Iz tega razloga sva se odločila, da problem rešujeva v [hitrem](https://julialang.org/benchmarks/) programskem jeziku.
 Poleg tega sva program kar precej pohitrila tudi s paralelnim računanjem enačb sistema. 
 	
