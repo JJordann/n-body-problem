@@ -67,10 +67,8 @@ Iz tega razloga sva se odločila, da problem rešujeva v [hitrem](https://julial
 Poleg tega sva program kar precej pohitrila tudi s paralelnim računanjem enačb sistema. 
 	
 	
-	
-
-## Rezultati
-Program v večini deluje tako, kot je bil na začetku zamišljen. Opazila sva nekaj anomalij, 
+## Težave
+Opazila sva nekaj anomalij, 
 in sicer včasih, ko dve telesi prideta zelo blizu, manjšega od njiju odnese iz orbite. To se zgodi, ker telo zaradi bližine dobi ogromen pospešek, v naslednji iteraciji je pa že dovolj oddaljeno, da pobegne. To sva do neke mere rešila z uvedbo omejitve minimalne razdalje, s katero se računa pospešek. To je preprečilo pobeg planetov iz orbite, vendar precej krši zakone fizike, zato sva jo na koncu opustila.  
 
 | ![gif](img/150teles.gif) | 
@@ -83,6 +81,19 @@ nekaj teles pusti za seboj. To je verjetno posledica slabe postavitve začetnih 
 | ![gif](img/mimobezni.gif) |
 |:--:|
 | Gruči ob hitrem premikanju pustita nekaj teles za seboj |
+
+## Rezultati
+
+Sledeče animacije prikazujejo delovanje končnega programa.
+
+| ![gif](img/pobarvani2000.gif) |
+|:--:|
+| Primer za dve gruči po 1000 teles, ki trčita |
+
+| ![gif](img/mimobezni2000.gif) |
+|:--:|
+| Primer za dve mimobežni gruči po 1000 teles |
+
 
 ## (Neuresničene) ideje za izboljšavo
 
@@ -120,17 +131,3 @@ zelo oddaljena telesa bi jih pa lahko aproksimiral.
 
 
 
-
-
-
-
-
-
-## Primer za dve gruči po 30 teles, ki trčita
-![gif](img/60teles.gif)
-
-
-## Primer za 2000 teles
-![gif](img/pobarvani_big_slow.gif)
-![gif](img/pobarvani2000.gif)
-![gif](img/mimobezni2000.gif)
