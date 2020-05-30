@@ -1,5 +1,3 @@
-# Million Body Problem
-
 ### Poganjanje programov na več jedrih (primer za 4 jedra)
 ```julia
 $ export JULIA_NUM_THREADS=4
