@@ -63,9 +63,9 @@ poljubno število gruč.
 ###  Optimizacija 
 Numerično reševanje tega sistema enačb je zelo časovno potratna, sploh pri 
 večjem številu teles. Časovna kompleksnost računanje enega koraka je namreč O(n^2). 
-Iz tega razloga sva se odločila, da problem rešujeva v hitrem programskem jeziku (Julia).
+Iz tega razloga sva se odločila, da problem rešujeva v [hitrem](https://julialang.org/benchmarks/) programskem jeziku.
 Poleg tega sva program kar precej pohitrila tudi s paralelnim računanjem enačb sistema. 
-	// dodaj nekaj o tem kako izjemno hiter je program
+	
 	
 	
 
@@ -77,6 +77,12 @@ in sicer včasih, ko dve telesi prideta zelo blizu, manjšega od njiju odnese iz
 |:--:|
 | Dve telesi pobegneta iz orbite |
 
+Še ena anomalija se je pojavila pri simulaciji mimobežnih galaksij. Zaradi hitrega premikanja gruče se včasih zgodi, da 
+nekaj teles pusti za seboj. To je verjetno posledica slabe postavitve začetnih pogojev. Ostali primeri te težave nimajo, saj dopuščajo dovolj nizke hitrosti gruč, da se to ne zgodi.
+
+| ![gif](img/mimobezni.gif) |
+|:--:|
+| Gruči ob hitrem premikanju pustita nekaj teles za seboj |
 
 ## (Neuresničene) ideje za izboljšavo
 
@@ -122,9 +128,6 @@ zelo oddaljena telesa bi jih pa lahko aproksimiral.
 
 ## Primer za dve gruči po 30 teles, ki trčita
 ![gif](img/60teles.gif)
-
-## Primer za mimobežni galaksiji (500 teles)
-![gif](img/mimobezni.gif)
 
 
 ## Primer za 2000 teles
