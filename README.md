@@ -23,8 +23,8 @@ zelo težavno, zato se ga za večje število teles rešuje numerično.
 ## Pristop k reševanju
 Ta problem se lahko prevede na reševanje sledečih enačb:
 
- ![img](img/enacba.png)
-
+ ![img](img/enacba.PNG)
+ 
 Reševanja se lahko lotimo s katerokoli metodo za numerično integracijo.
 Zaradi hitrosti in enostavnosti implementacije sva za to uporabila 
 Eulerjevo metodo. 
@@ -48,9 +48,11 @@ Za pretvarjanje se lahko uporabi programa FFmpeg ali ImageMagick.
 
 ###  Začetni pogoji
 Za razvoj programa do te točke je zadoščalo testiranje z resničnimi podatki 
-našega osončja, za razširitev na večje število teles jih bo pa potrebno generirati.
-![gif](img/osoncje.gif)
-*Primer za naše (nepopolno) osončje*
+našega osončja, za razširitev na večje število teles jih bo pa potrebno generirati.  
+
+| ![gif](img/osoncje.gif) |
+|:--:| 
+| Primer za naše (nepopolno) osončje |
 
 Za generiranje začetnih pogojev sva izdelala funkcijo, ki za podan seznam točk 
 naključno generira gruče teles. Na sredini vsake gruče je telo, ki ima večjo maso 
@@ -80,8 +82,9 @@ Prva ideja za izboljšavo je reševanje enačb z uporabo metode z adaptivno dol�
 Ugotovila sva, da Eulerjeva metoda večino časa deluje sprejemljivo, vendar na majhnem številu 
 korakov naredi ogromno napako. 
 
-![img](img/momentum-two-clusters.png)
-*Vrtilna količina dveh gruč, ki trčita. napaka naraste ob trku*
+|![img](img/momentum-two-clusters.png)|
+|:--:| 
+| *Vrtilna količina dveh gruč, ki trčita. napaka naraste ob trku*| 
 
 Napako sva merila s spremembo v vrtilni količini celotnega sistema,
 ki naj bi ob idealni simulaciji ostala konstantna. Dolžino koraka bi lahko prilagajali glede na 
