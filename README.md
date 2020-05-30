@@ -22,9 +22,9 @@ Ta problem se lahko prevede na reševanje sledečih enačb:
 
 <img src="img/enacba.PNG" width="480" align="center">
 
-Reševanja se lahko lotimo s katerokoli metodo za numerično integracijo.
-Zaradi hitrosti in enostavnosti implementacije sva za to uporabila 
-Eulerjevo metodo. 
+Reševanja se lahko lotimo s katerokoli metodo za numerično reševanje 
+diferencialnih enačb. Zaradi hitrosti in enostavnosti implementacije 
+sva za to uporabila Eulerjevo metodo. 
 
 ### Grafični prikaz gibanja
 Za grafični prikaz gibanja je sedaj potrebno po vsakem koraku Eulerjeve
@@ -62,14 +62,37 @@ poljubno število gruč.
 
 ###  Optimizacija 
 Numerično reševanje tega sistema enačb je zelo časovno potratna, sploh pri 
-večjem številu teles. Časovna kompleksnost računanje enega koraka je namreč O(n^2). 
-Iz tega razloga sva se odločila, da problem rešujeva v hitrem programskem jeziku (Julia).
+večjem številu teles. Časovna kompleksnost računanje enega koraka v odvisnosti od števila teles je namreč O(n²). 
+Iz tega razloga sva se odločila, da problem rešujeva v [hitrem](https://julialang.org/benchmarks/) programskem jeziku.
 Poleg tega sva program kar precej pohitrila tudi s paralelnim računanjem enačb sistema. 
-	// dodaj nekaj o tem kako izjemno hiter je program
 	
 	
+## Težave
+Opazila sva nekaj anomalij, 
+in sicer včasih, ko dve telesi prideta zelo blizu, manjšega od njiju odnese iz orbite. To se zgodi, ker telo zaradi bližine dobi ogromen pospešek, v naslednji iteraciji je pa že dovolj oddaljeno, da pobegne. To sva do neke mere rešila z uvedbo omejitve minimalne razdalje, s katero se računa pospešek. To je preprečilo pobeg planetov iz orbite, vendar precej krši zakone fizike, zato sva jo na koncu opustila.  
+
+| ![gif](img/150teles.gif) | 
+|:--:|
+| Dve telesi pobegneta iz orbite |
+
+Še ena anomalija se je pojavila pri simulaciji mimobežnih galaksij. Zaradi hitrega premikanja gruče se včasih zgodi, da 
+nekaj teles pusti za seboj. To je verjetno posledica slabe postavitve začetnih pogojev. Ostali primeri te težave nimajo, saj dopuščajo dovolj nizke hitrosti gruč, da se to ne zgodi.
+
+| ![gif](img/mimobezni.gif) |
+|:--:|
+| Gruči ob hitrem premikanju pustita nekaj teles za seboj |
 
 ## Rezultati
+
+Sledeče animacije prikazujejo delovanje končnega programa.
+
+| ![gif](img/pobarvani2000.gif) |
+|:--:|
+| Primer za dve gruči po 1000 teles, ki trčita |
+
+| ![gif](img/mimobezni2000.gif) |
+|:--:|
+| Primer za dve mimobežni gruči po 1000 teles |
 
 
 ## (Neuresničene) ideje za izboljšavo
@@ -85,7 +108,7 @@ korakov naredi ogromno napako.
 
 |![img](img/momentum-two-clusters.png)|
 |:--:| 
-| Vrtilna količina dveh gruč, ki trčita. napaka naraste ob trku | 
+| Vrtilna količina dveh gruč, ki trčita. Napaka naraste ob trku | 
 
 Napako sva merila s spremembo v vrtilni količini celotnega sistema,
 ki naj bi ob idealni simulaciji ostala konstantna. Dolžino koraka bi lahko prilagajali glede na 
@@ -108,23 +131,3 @@ zelo oddaljena telesa bi jih pa lahko aproksimiral.
 
 
 
-
-
-
-
-
-
-## Primer za dve gruči po 30 teles, ki trčita
-![gif](img/60teles.gif)
-
-## Primer za dve gruči po 75 teles, ki trčita
-![gif](img/150teles.gif)
-
-## Primer za mimobežni galaksiji (500 teles)
-![gif](img/mimobezni.gif)
-
-
-## Primer za 2000 teles
-![gif](img/pobarvani_big_slow.gif)
-![gif](img/pobarvani2000.gif)
-![gif](img/mimobezni2000.gif)
