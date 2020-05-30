@@ -1,3 +1,4 @@
+# Problem milijon teles
 ### Poganjanje programov na več jedrih (primer za 4 jedra)
 ```julia
 $ export JULIA_NUM_THREADS=4
@@ -10,8 +11,6 @@ julia> @time main()
 $ FPS=20
 $ convert -delay 1x$FPS frame????.png out.gif
 ```
-
-# Problem milijon teles
 
 ## Predstavitev problema
 Problem milijon teles je problem napovedovanja gibanja velikega števila teles, 
