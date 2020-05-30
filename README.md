@@ -4,7 +4,7 @@
 ```julia
 $ export JULIA_NUM_THREADS=4
 $ julia -p 4
-julia> include("clusters.jl")
+julia> include("million.jl")
 julia> @time main()
 ```
 ### Izdelava animacije
