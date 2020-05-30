@@ -79,15 +79,19 @@ Prva ideja za izboljšavo je reševanje enačb z uporabo metode z adaptivno dol�
 Ugotovila sva, da Eulerjeva metoda večino časa deluje sprejemljivo, vendar na majhnem številu 
 korakov naredi ogromno napako. 
 
+|![img](img/momentum-single-cluster.png) |
+|:--:|
+| Vrtilna količina ene gruče teles |
+
 |![img](img/momentum-two-clusters.png)|
 |:--:| 
-| *Vrtilna količina dveh gruč, ki trčita. napaka naraste ob trku*| 
+| Vrtilna količina dveh gruč, ki trčita. napaka naraste ob trku | 
 
 Napako sva merila s spremembo v vrtilni količini celotnega sistema,
 ki naj bi ob idealni simulaciji ostala konstantna. Dolžino koraka bi lahko prilagajali glede na 
 spremembo v vrtilni količini. 
 Še en pristop k reševanju tega problema bi bil, da bi korak, ki je povzročil ogromno napako, 
-izvedel znova, z manjšo dolžino koraka. S tem bi se izognil pojavu, ki je prikazan na (Figure 3), 
+izvedel znova, z manjšo dolžino koraka. S tem bi se izognil pojavu, ki je prikazan na zgornji sliki, 
 kjer ogromna napaka nastane v zgolj enem koraku, in nadaljno zmanjševanje dolžine koraka ni koristno. 
 
 ### Nadaljna pohitritev izvajanja
@@ -107,19 +111,10 @@ zelo oddaljena telesa bi jih pa lahko aproksimiral.
 
 
 
-## Primer za naše (nepopolno) osončje
-![gif](img/osoncje.gif)
-
-### Vrtilna količina sistema ene gruče teles
-![img](img/momentum-single-cluster.png)
 
 
 ## Primer za dve gruči po 30 teles, ki trčita
 ![gif](img/60teles.gif)
-
-
-### Vrtilna količina sistema dveh druč teles, ki trčita
-![img](img/momentum-two-clusters.png)
 
 ## Primer za dve gruči po 75 teles, ki trčita
 ![gif](img/150teles.gif)
