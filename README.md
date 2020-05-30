@@ -89,7 +89,8 @@ korakov naredi ogromno napako.
 
 Napako sva merila s spremembo v vrtilni količini celotnega sistema,
 ki naj bi ob idealni simulaciji ostala konstantna. Dolžino koraka bi lahko prilagajali glede na 
-spremembo v vrtilni količini. 
+spremembo v vrtilni količini.   
+  
 Še en pristop k reševanju tega problema bi bil, da bi korak, ki je povzročil ogromno napako, 
 izvedel znova, z manjšo dolžino koraka. S tem bi se izognil pojavu, ki je prikazan na zgornji sliki, 
 kjer ogromna napaka nastane v zgolj enem koraku, in nadaljno zmanjševanje dolžine koraka ni koristno. 
