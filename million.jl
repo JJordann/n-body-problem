@@ -4,6 +4,7 @@ using Images
 @everywhere using LinearAlgebra
 @everywhere using SharedArrays
 
+
 function main() 
     n_of_clusters = 2
     n_of_objects_per_cluster = 1000
@@ -14,6 +15,7 @@ function main()
     # dolžina koraka Eulerjeve metode
     dt = 0.0005
 
+    # število iteracij Eulerjeve metode, ki jih bo program izvedel
     iters = 650;
 
     G = 10
@@ -23,24 +25,24 @@ function main()
     radius = 150
 
 
-    ######## primer za galaksiji ki trčita ###############
-    ## začetne lokacije centrov galaksij
-    #centers = [-165 -165 0;
-    #            165  165 0]
+    mimobezni = false;
 
-    ## začetna hitrost centrov galaksij
-    #initialVel = [1 0 0;
-    #             -1 0 0] .* 0.01
-    ######################################################
+    if(mimobezni) 
+        # primer za mimobežni galaksiji
+        centers = [-165 -165 0;
+                    165  165 0]
 
+        initialVel = [1 -0.75 0;
+                     -1  0.75 0] .* 15.0 
+    else
+        # primer za galaksiji, ki trčita
+        centers = [-165 -165 0;
+                    165  165 0]
 
-    ###### primer za mimobežni galaksiji ###############
-    centers = [-165 -165 0;
-                165  165 0]
+        initialVel = [1 0 0;
+                     -1 0 0] .* 0.01
+    end
 
-    initialVel = [1 -0.75 0;
-                 -1  0.75 0] .* 15.0 
-    ####################################################
 
     pos_x, pos_y, pos_z, vel_x, vel_y, vel_z, M = 
         generate_starting_conditions(n_of_clusters, n_of_objects_per_cluster, 
@@ -53,16 +55,11 @@ function main()
     vel = convert(SharedArray, vel)
 
 
-    # minimalna razdalja, s katero se računa pospešek
-    # brez te omejitve dobijo telesa ogromen pospešek
-    # in pobegnejo iz orbite
-    min_distance = 2
-
     for iter in 1:iters
         
         toImage(n, pos, iter, vel);
         
-        acc = step(M, G, pos, vel, dt, N, min_distance)
+        acc = step(M, G, pos, vel, dt, N)
 
         vel[:, :] = vel .+ (acc .* dt)
         pos[:, :] = pos .+ (vel .* dt)
@@ -79,21 +76,26 @@ function toImage(n, pos, frame_number, velocity)
     # (in da so razdalje med njimi malo večje)
     scale = p -> round.(p .* 10 .+ n/2)
 
-    # projekcija 3D točke na 2D ravnino
+    # (ortografska) projekcija 3D točke na 2D ravnino
     project = p -> [p[1], p[2]]
-    #project = p -> [p[1], p[2]] ./ (p[3] + 1)
     
+    # ustvari prazno (črno) RGB sliko
     img = zeros(3, n, n)
 
+    # pobarva pripadajoč piksel vsakega telesa
     for i = 1:length(pos[:, 1, 1])
+        # določi intenzivnost barve glede na oddaljenost od ravnine z=0
         intensity = 1 / (1 + pos[i, 3]) |> abs
         intensity = intensity > 1 ? 1 : intensity
-        vel1 = velocity[i, :] |> norm
-        colour = min(1, (vel1 / 2500))
 
+        # pobarvaj piksel glede na hitrost telesa
+        colour = min(1, (norm(velocity[i, :]) / 2500))
+
+        # izračunaj lokacijo piksla, na katerega pade telo
         xy1 = project(pos[i, :]) 
         xy = scale(xy1) .|> (Integer ∘ round)
 
+        # če je piksel na sliki, ga pobarvaj
         if (xy[1] >= 1 && xy[1] <= n && xy[2] >= 1 && xy[2] <= n)
             img[:, xy[1], xy[2]] += ([1, 1, 1] - [0, 1, 1] .* colour) .* intensity
             img[:, xy[1], xy[2]] = img[:, xy[1], xy[2]] .|> (c -> c > 1 ? 1 : c)
@@ -104,13 +106,13 @@ function toImage(n, pos, frame_number, velocity)
 end
 
 
-@everywhere function step(M, G, pos::SharedArray, vel::SharedArray, dt, N, min_distance)
+# izvede en korak Eulerjeve metode
+@everywhere function step(M, G, pos::SharedArray, vel::SharedArray, dt, N)
     acc = convert(SharedArray, zeros(N, 3))
     @inbounds @sync @distributed for i in 1:N
        for j in 1:N
             if i != j
                 dist = norm(pos[j, :] - pos[i, :])
-                #dist = max(dist, min_distance) 
                 acc[i, :] += (G * M[j] ./ (dist .^ 3)) .* (pos[j, :] - pos[i, :])
             end
         end
@@ -156,21 +158,20 @@ function generate_starting_conditions(cluster_number, object_number, center, rad
         y_coordinates = r .* sin.(α) .* sin.(β)
         z_coordinates = r .* cos.(α)
 
-		#get rectangular vector (simplified)
+		# get orthogonal vector (simplified)
 		for k in 1:object_number - 1
 			xVel = x_coordinates[k]
 			yVel = - xVel * xVel / y_coordinates[k]
             zVel = rand(Uniform(-abs(xVel), abs(xVel)))
 			
-			#velocity magnitude adjustment
+			# velocity magnitude adjustment
 			vectorL = vector_length(xVel, yVel, zVel)
 			r = vector_length(x_coordinates[k], y_coordinates[k], z_coordinates[k])
-			#center_mass = 1000.0 
 			desired_length = sqrt(center_mass / r)
 			
-			multiplyer = vectorL / desired_length
-			xVel = xVel / multiplyer
-			yVel = yVel / multiplyer
+			multiplier = vectorL / desired_length
+			xVel = xVel / multiplier
+			yVel = yVel / multiplier
 
 			append!(x_vel_together, xVel)
 			append!(y_vel_together, yVel)
@@ -180,7 +181,7 @@ function generate_starting_conditions(cluster_number, object_number, center, rad
 			
 		end
 		
-		#center of the cluster
+		# center of the cluster
 		append!(m_together, center_mass) 
 		
         append!(x_vel_together, initialVel[cluster, 1])
