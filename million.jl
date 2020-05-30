@@ -7,7 +7,7 @@ using Images
 
 function main() 
     n_of_clusters = 2
-    n_of_objects_per_cluster = 1000
+    n_of_objects_per_cluster = 3000
 
     # image size
     n = 512 + 256
@@ -25,7 +25,7 @@ function main()
     radius = 150
 
 
-    mimobezni = false;
+    mimobezni = true;
 
     if(mimobezni) 
         # primer za mimobežni galaksiji
