@@ -22,9 +22,9 @@ Ta problem se lahko prevede na reševanje sledečih enačb:
 
 <img src="img/enacba.PNG" width="480" align="center">
 
-Reševanja se lahko lotimo s katerokoli metodo za numerično integracijo.
-Zaradi hitrosti in enostavnosti implementacije sva za to uporabila 
-Eulerjevo metodo. 
+Reševanja se lahko lotimo s katerokoli metodo za numerično reševanje 
+diferencialnih enačb. Zaradi hitrosti in enostavnosti implementacije 
+sva za to uporabila Eulerjevo metodo. 
 
 ### Grafični prikaz gibanja
 Za grafični prikaz gibanja je sedaj potrebno po vsakem koraku Eulerjeve
@@ -70,6 +70,12 @@ Poleg tega sva program kar precej pohitrila tudi s paralelnim računanjem enačb
 	
 
 ## Rezultati
+Program v večini deluje tako, kot je bil na začetku zamišljen. Opazila sva nekaj anomalij, 
+in sicer včasih, ko dve telesi prideta zelo blizu, manjšega od njiju odnese iz orbite. To se zgodi, ker telo zaradi bližine dobi ogromen pospešek, v naslednji iteraciji je pa že dovolj oddaljeno, da pobegne. To sva do neke mere rešila z uvedbo omejitve minimalne razdalje, s katero se računa pospešek. To je preprečilo pobeg planetov iz orbite, vendar precej krši zakone fizike, zato sva jo na koncu opustila.  
+
+| ![gif](img/150teles.gif) | 
+|:--:|
+| Dve telesi pobegneta iz orbite |
 
 
 ## (Neuresničene) ideje za izboljšavo
@@ -85,7 +91,7 @@ korakov naredi ogromno napako.
 
 |![img](img/momentum-two-clusters.png)|
 |:--:| 
-| Vrtilna količina dveh gruč, ki trčita. napaka naraste ob trku | 
+| Vrtilna količina dveh gruč, ki trčita. Napaka naraste ob trku | 
 
 Napako sva merila s spremembo v vrtilni količini celotnega sistema,
 ki naj bi ob idealni simulaciji ostala konstantna. Dolžino koraka bi lahko prilagajali glede na 
@@ -116,9 +122,6 @@ zelo oddaljena telesa bi jih pa lahko aproksimiral.
 
 ## Primer za dve gruči po 30 teles, ki trčita
 ![gif](img/60teles.gif)
-
-## Primer za dve gruči po 75 teles, ki trčita
-![gif](img/150teles.gif)
 
 ## Primer za mimobežni galaksiji (500 teles)
 ![gif](img/mimobezni.gif)
