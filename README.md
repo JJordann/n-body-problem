@@ -23,7 +23,7 @@ zelo težavno, zato se ga za večje število teles rešuje numerično.
 ## Pristop k reševanju
 Ta problem se lahko prevede na reševanje sledečih enačb:
 
- ![img](img/enacba.PNG =480x70)
+ ![img](img/enacba.PNG | width=300)
  
 Reševanja se lahko lotimo s katerokoli metodo za numerično integracijo.
 Zaradi hitrosti in enostavnosti implementacije sva za to uporabila 
