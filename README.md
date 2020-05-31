@@ -1,9 +1,9 @@
 # Problem milijon teles
 
 ---
-title: my title
-author: my name
-date: today
+### Avtorja
+* Jordan Lesjak
+* Timen Stepišnik Perdih
 ---
 ### Poganjanje programov na več jedrih (primer za 4 jedra)
 ```julia
@@ -21,7 +21,10 @@ $ convert -delay 1x$FPS frame????.png out.gif
 ## Predstavitev problema
 Problem milijon teles je problem napovedovanja gibanja velikega števila teles, 
 ki med seboj vplivajo s silo gravitacije. Reševanje tega problema je analitično
-zelo težavno, zato se ga za večje število teles rešuje numerično.
+zelo težavno, zato se ga za večje število teles rešuje numerično. Zaradi vpliva vsakega telesa na vsako telo
+je cilj implementirati časovno čim manj zahteven algoritem za ustvarjanje animacije gibanja teles.
+Ker je sila med telesi gravitacijska, bodo animacije predstavljale množico teles, ki krožijo okoli enega
+ali več bolj masivnih teles.
 
 ## Pristop k reševanju
 Problem se lahko prevede na reševanje sledečega sistema diferencialnih enačb:
