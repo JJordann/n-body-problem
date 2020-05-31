@@ -18,7 +18,7 @@ ki med seboj vplivajo s silo gravitacije. Reševanje tega problema je analitičn
 zelo težavno, zato se ga za večje število teles rešuje numerično.
 
 ## Pristop k reševanju
-Ta problem se lahko prevede na reševanje sledečih enačb:
+Ta problem se lahko prevede na reševanje sledečega sistema diferencialnih enačb:
 
 <img src="img/enacba.PNG" width="480" align="center">
 
