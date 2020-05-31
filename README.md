@@ -104,8 +104,18 @@ Sledeče animacije prikazujejo delovanje končnega programa.
 |:--:|
 | Primer za dve mimobežni gruči po 1000 teles |
 
+## Zaključki in komentarji
 
-## (Neuresničene) ideje za izboljšavo
+### Zanimivost
+
+Pri ustvarjanju pravilnih pogojev za telesa, sva preizkusila veliko kombinacij ne le začetnih pogojev, pač pa tudi 
+v računanju gravitacijske sile. Eden izmed poskusov je vključeval spremenitev vpliva razdalje med telesa z r^3 na r^2
+in prikazal zanimive rezultate, zato tukaj prikazujeva še tako dobljeno animacijo.
+
+| ![gif](img/brezMinInRn23000/out.gif) |
+|:--:|
+| Primer za dve gruči po 3000 teles, pri zmanjšanju vpliva razdalje med telesi |
+
 
 ###  izboljšava natančnosti računanja
 Prva ideja za izboljšavo je reševanje enačb z uporabo metode z adaptivno dolžino koraka.
@@ -131,7 +141,15 @@ kjer ogromna napaka nastane v zgolj enem koraku, in nadaljno zmanjševanje dolž
 ### Nadaljna pohitritev izvajanja
 Program bi se lahko (na račun natančnosti) precej hitreje izvajal, če bi za računanje uporabljal
 prostorsko delitev teles. Sile na telo bi za bližnja telesa računal po običajnem postopku, za 
-zelo oddaljena telesa bi jih pa lahko aproksimiral. 
+zelo oddaljena telesa bi jih pa lahko aproksimiral.
+
+Hitrejše izvajanje bi omogočilo tudi izvajanje programa na GPU. 
+
+
+### Razdelitev dela
+Delo ni bilo striktno razdeljeno, saj je vključevalo veliko poskušanja različnih kombinacij znotraj celotnega programa. Okvirna zadolženost za kodo 
+je narekovala skrbništvo za Eulerjevo metodo in kreairanje animacije Jordanu Lesjaku, generiranje teles, njihovih mas, pozicij in začetnih hitrosti pa Timnu
+Stepišniku Perdihu.
 
 ## Viri in literatura
 
