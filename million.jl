@@ -162,8 +162,8 @@ function generate_starting_conditions(cluster_number, object_number, center, rad
 		for k in 1:object_number - 1
 			xVel = x_coordinates[k]
 			yVel = - xVel * xVel / y_coordinates[k]
-            zVel = rand(Uniform(-abs(xVel), abs(xVel)))
-			
+            #zVel = rand(Uniform(-abs(xVel), abs(xVel)))
+			zVel = 0
 			# velocity magnitude adjustment
 			vectorL = vector_length(xVel, yVel, zVel)
 			r = vector_length(x_coordinates[k], y_coordinates[k], z_coordinates[k])

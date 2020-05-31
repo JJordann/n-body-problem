@@ -55,7 +55,7 @@ Za generiranje začetnih pogojev sva izdelala funkcijo, ki za podan seznam točk
 naključno generira gruče teles. Na sredini vsake gruče je telo, ki ima večjo maso 
 od ostalih. Vektor hitrosti tega telesa je vnaprej določen in določa smer, 
 v katero se bo premikala celotna gruča, vektorji hitrosti za ostala telesa so pa
-določeni tako, da so pravokotni na njihov krajevni vektor glede na središče gruče.
+določeni tako, da so pravokotni na njihov krajevni vektor glede na središčno telo.
 Velikost vektorja hitrosti telesa je določena z enačbo: (masa središčnega telesa) / (razdalja do središčnega telesa). 
 Ob takih pogojih bodo telesa krožila okoli središča svoje gruče. Za vse primere 
 sva uporabila dve gruči, vendar funkcija omogoča generiranje začetnih pogojev za 
