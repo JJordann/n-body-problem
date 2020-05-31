@@ -1,4 +1,10 @@
 # Problem milijon teles
+
+---
+title: my title
+author: my name
+date: today
+---
 ### Poganjanje programov na več jedrih (primer za 4 jedra)
 ```julia
 $ export JULIA_NUM_THREADS=4
@@ -18,7 +24,7 @@ ki med seboj vplivajo s silo gravitacije. Reševanje tega problema je analitičn
 zelo težavno, zato se ga za večje število teles rešuje numerično.
 
 ## Pristop k reševanju
-Ta problem se lahko prevede na reševanje sledečega sistema diferencialnih enačb:
+Problem se lahko prevede na reševanje sledečega sistema diferencialnih enačb:
 
 <img src="img/enacba.PNG" width="480" align="center">
 
