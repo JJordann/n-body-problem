@@ -96,15 +96,20 @@ nekaj teles pusti za seboj. To je verjetno posledica slabe postavitve začetnih 
 
 Sledeče animacije prikazujejo delovanje končnega programa.
 
-| ![gif](img/pobarvani2000.gif) |
+| ![gif](img/final_trcenje_2000/out_trimmed.gif) |
 |:--:|
 | Primer za dve gruči po 1000 teles, ki trčita |
 
-| ![gif](img/mimobezni2000.gif) |
+| ![gif](img/final_mimo_6000/out_brez_prvih_80.gif) |
 |:--:|
 | Primer za dve mimobežni gruči po 1000 teles |
 
 ## Zaključki in komentarji
+
+### Časovna zahtevnost
+
+Zaradi vpliva vsakega telesa na vsako drugo telo, časovna zahtevnost programa kvadratno narašča s številom teles. 
+V rezultatih sta prikazana primera z 2000 telesi, ki je trajal 1937 sekund, in s 6000 telesi, ki je trajal 11186 sekund.
 
 ### Zanimivost
 

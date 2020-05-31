@@ -32,8 +32,8 @@ function main()
         centers = [-165 -165 0;
                     165  165 0]
 
-        initialVel = [1 -0.75 0;
-                     -1  0.75 0] .* 15.0 
+        initialVel = [-1 -0.25 0;
+                     1  0.5 0] .* 15.0 
     else
         # primer za galaksiji, ki trčita
         centers = [-165 -165 0;
@@ -162,8 +162,8 @@ function generate_starting_conditions(cluster_number, object_number, center, rad
 		for k in 1:object_number - 1
 			xVel = x_coordinates[k]
 			yVel = - xVel * xVel / y_coordinates[k]
-            #zVel = rand(Uniform(-abs(xVel), abs(xVel)))
-			zVel = 0
+            zVel = rand(Uniform(-abs(xVel), abs(xVel)))
+			#zVel = 0
 			# velocity magnitude adjustment
 			vectorL = vector_length(xVel, yVel, zVel)
 			r = vector_length(x_coordinates[k], y_coordinates[k], z_coordinates[k])
