@@ -5,6 +5,12 @@
 * Jordan Lesjak
 * Timen Stepišnik Perdih
 ---
+### Inštalacija odvisnosti
+```julia
+$ julia
+julia> using Pkg
+julia> Pkg.add.(["Distributions", "Distributed", "Images", "LinearAlgebra", "SharedArrays"])
+```
 ### Poganjanje programov na več jedrih (primer za 4 jedra)
 ```julia
 $ export JULIA_NUM_THREADS=4
