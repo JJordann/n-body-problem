@@ -5,6 +5,12 @@
 * Jordan Lesjak
 * Timen Stepišnik Perdih
 ---
+### Inštalacija odvisnosti
+```julia
+$ julia
+julia> using Pkg
+julia> Pkg.add.(["Distributions", "Distributed", "Images", "LinearAlgebra", "SharedArrays"])
+```
 ### Poganjanje programov na več jedrih (primer za 4 jedra)
 ```julia
 $ export JULIA_NUM_THREADS=4
@@ -96,11 +102,11 @@ nekaj teles pusti za seboj. To je verjetno posledica slabe postavitve začetnih 
 
 Sledeče animacije prikazujejo delovanje končnega programa.
 
-| ![gif](img/final_trcenje_2000/out_trimmed.gif) |
+| ![gif](img/pobarvani2000.gif) |
 |:--:|
 | Primer za dve gruči po 1000 teles, ki trčita |
 
-| ![gif](img/final_mimo_6000/out_brez_prvih_80.gif) |
+| ![gif](img/mimobezni6000.gif) |
 |:--:|
 | Primer za dve mimobežni gruči po 1000 teles |
 
@@ -117,12 +123,12 @@ Pri ustvarjanju pravilnih pogojev za telesa, sva preizkusila veliko kombinacij n
 v računanju gravitacijske sile. Eden izmed poskusov je vključeval spremenitev vpliva razdalje med telesa z r^3 na r^2
 in prikazal zanimive rezultate, zato tukaj prikazujeva še tako dobljeno animacijo.
 
-| ![gif](img/brezMinInRn23000/out.gif) |
+| ![gif](img/Rna2_6000.gif) |
 |:--:|
 | Primer za dve gruči po 3000 teles, pri zmanjšanju vpliva razdalje med telesi |
 
-
-###  izboljšava natančnosti računanja
+### Ideje za izboljšavo
+####  izboljšava natančnosti računanja
 Prva ideja za izboljšavo je reševanje enačb z uporabo metode z adaptivno dolžino koraka.
 Ugotovila sva, da Eulerjeva metoda večino časa deluje sprejemljivo, vendar na majhnem številu 
 korakov naredi ogromno napako. 
@@ -143,7 +149,7 @@ spremembo v vrtilni količini.
 izvedel znova, z manjšo dolžino koraka. S tem bi se izognil pojavu, ki je prikazan na zgornji sliki, 
 kjer ogromna napaka nastane v zgolj enem koraku, in nadaljno zmanjševanje dolžine koraka ni koristno. 
 
-### Nadaljna pohitritev izvajanja
+#### Nadaljna pohitritev izvajanja
 Program bi se lahko (na račun natančnosti) precej hitreje izvajal, če bi za računanje uporabljal
 prostorsko delitev teles. Sile na telo bi za bližnja telesa računal po običajnem postopku, za 
 zelo oddaljena telesa bi jih pa lahko aproksimiral.
@@ -158,7 +164,7 @@ Stepišniku Perdihu.
 
 ## Viri in literatura
 
-
+* Podatki za osončje: https://docs.sciml.ai/stable/models/physical/
 
 
 
