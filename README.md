@@ -96,11 +96,11 @@ nekaj teles pusti za seboj. To je verjetno posledica slabe postavitve začetnih 
 
 Sledeče animacije prikazujejo delovanje končnega programa.
 
-| ![gif](img/final_trcenje_2000/out_trimmed.gif) |
+| ![gif](img/pobarvani2000.gif) |
 |:--:|
 | Primer za dve gruči po 1000 teles, ki trčita |
 
-| ![gif](img/final_mimo_6000/out_brez_prvih_80.gif) |
+| ![gif](img/mimobezni6000.gif) |
 |:--:|
 | Primer za dve mimobežni gruči po 1000 teles |
 
@@ -117,7 +117,7 @@ Pri ustvarjanju pravilnih pogojev za telesa, sva preizkusila veliko kombinacij n
 v računanju gravitacijske sile. Eden izmed poskusov je vključeval spremenitev vpliva razdalje med telesa z r^3 na r^2
 in prikazal zanimive rezultate, zato tukaj prikazujeva še tako dobljeno animacijo.
 
-| ![gif](img/brezMinInRn23000/out.gif) |
+| ![gif](img/Rna2_6000.gif) |
 |:--:|
 | Primer za dve gruči po 3000 teles, pri zmanjšanju vpliva razdalje med telesi |
 
