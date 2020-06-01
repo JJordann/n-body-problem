@@ -29,11 +29,11 @@ function main()
 
     if(mimobezni) 
         # primer za mimobežni galaksiji
-        centers = [-165 -165 0;
-                    165  165 0]
+        centers = [-100 -100 0;
+                    100  100 0]
 
-        initialVel = [-1 -0.25 0;
-                     1  0.5 0] .* 15.0 
+        initialVel = [-1 0.75 0;
+                       1  -0.75 0] .* 10.0
     else
         # primer za galaksiji, ki trčita
         centers = [-165 -165 0;

@@ -109,7 +109,7 @@ Sledeče animacije prikazujejo delovanje končnega programa.
 ### Časovna zahtevnost
 
 Zaradi vpliva vsakega telesa na vsako drugo telo, časovna zahtevnost programa kvadratno narašča s številom teles. 
-V rezultatih sta prikazana primera z 2000 telesi, ki je trajal 1937 sekund, in s 6000 telesi, ki je trajal 11186 sekund.
+V rezultatih sta prikazana primera z 2000 telesi, ki je trajal 1937 sekund, in s 6000 telesi, ki je trajal 11186 sekund (izvajano na INTEL i5-8300H).
 
 ### Zanimivost
 
