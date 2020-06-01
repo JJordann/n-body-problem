@@ -121,8 +121,8 @@ in prikazal zanimive rezultate, zato tukaj prikazujeva še tako dobljeno animaci
 |:--:|
 | Primer za dve gruči po 3000 teles, pri zmanjšanju vpliva razdalje med telesi |
 
-
-###  izboljšava natančnosti računanja
+### Ideje za izboljšavo
+####  izboljšava natančnosti računanja
 Prva ideja za izboljšavo je reševanje enačb z uporabo metode z adaptivno dolžino koraka.
 Ugotovila sva, da Eulerjeva metoda večino časa deluje sprejemljivo, vendar na majhnem številu 
 korakov naredi ogromno napako. 
@@ -143,7 +143,7 @@ spremembo v vrtilni količini.
 izvedel znova, z manjšo dolžino koraka. S tem bi se izognil pojavu, ki je prikazan na zgornji sliki, 
 kjer ogromna napaka nastane v zgolj enem koraku, in nadaljno zmanjševanje dolžine koraka ni koristno. 
 
-### Nadaljna pohitritev izvajanja
+#### Nadaljna pohitritev izvajanja
 Program bi se lahko (na račun natančnosti) precej hitreje izvajal, če bi za računanje uporabljal
 prostorsko delitev teles. Sile na telo bi za bližnja telesa računal po običajnem postopku, za 
 zelo oddaljena telesa bi jih pa lahko aproksimiral.
@@ -158,7 +158,7 @@ Stepišniku Perdihu.
 
 ## Viri in literatura
 
-
+* Podatki za osončje: https://docs.sciml.ai/stable/models/physical/
 
 
 
