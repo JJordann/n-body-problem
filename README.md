@@ -80,7 +80,8 @@ poljubno število gruč.
 Numerično reševanje tega sistema enačb je zelo časovno potratna, sploh pri 
 večjem številu teles. Časovna kompleksnost računanje enega koraka v odvisnosti od števila teles je namreč O(n²). 
 Iz tega razloga sva se odločila, da problem rešujeva v [hitrem](https://julialang.org/benchmarks/) programskem jeziku.
-Poleg tega sva program kar precej pohitrila tudi s paralelnim računanjem enačb sistema. 
+Poleg tega sva program kar precej pohitrila tudi s paralelnim računanjem enačb sistema.   
+Izvajanje primera za 1000 teles je na 4 jedrih približno dvakrat hitrejše kot na enem jedru. 100 iteracij na enem jedru vzame 167 sekund, paralelno pa 88 sekund (izvedeno na i5-2520M @ 3.2GHz). 
 	
 	
 ## Težave
