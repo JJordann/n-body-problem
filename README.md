@@ -108,7 +108,11 @@ Sledeče animacije prikazujejo delovanje končnega programa.
 
 | ![gif](img/mimobezni6000.gif) |
 |:--:|
-| Primer za dve mimobežni gruči po 1000 teles |
+| Primer za dve mimobežni gruči po 3000 teles |
+
+| ![gif](img/final_custom_6000/out_trimmed.gif) |
+|:--:|
+| Primer za srečanje gruč po 3000 teles |
 
 ## Zaključki in komentarji
 
