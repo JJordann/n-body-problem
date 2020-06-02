@@ -72,9 +72,9 @@ od ostalih. Vektor hitrosti tega telesa je vnaprej določen in določa smer,
 v katero se bo premikala celotna gruča, vektorji hitrosti za ostala telesa so pa
 določeni tako, da so pravokotni na njihov krajevni vektor glede na središčno telo.
 Z enačenjem gravitacijskega pospeška z radialnim pospeškom, 
-<img src="img/centripetalni.PNG" width="480" align="center">
+<img src="img/centripetalni.png" width="480" align="center">
 pridemo do zaključka, da je potrebna velikost hitrosti enaka
-<img src="img/hitrost.PNG" width="480" align="center">
+<img src="img/hitrost.png" width="480" align="center">
 Ob takih pogojih bodo telesa krožila okoli središča svoje gruče. Za vse primere 
 sva uporabila dve gruči, vendar funkcija omogoča generiranje začetnih pogojev za 
 poljubno število gruč. 
