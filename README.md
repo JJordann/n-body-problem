@@ -37,6 +37,7 @@ Problem se lahko prevede na reševanje sledečega sistema diferencialnih enačb:
 
 <img src="img/enacba.PNG" width="480" align="center">
 
+pri čemer sva brež škode predpostavila, da je G = 1.
 Reševanja se lahko lotimo s katerokoli metodo za numerično reševanje 
 diferencialnih enačb. Zaradi hitrosti in enostavnosti implementacije 
 sva za to uporabila Eulerjevo metodo. 
@@ -75,7 +76,7 @@ Z enačenjem gravitacijskega pospeška z radialnim pospeškom,
  
 <img src="img/centripetalni.png" width="170" height = "50" align="center">
 
-pridemo do zaključka, da je potrebna velikost hitrosti enaka
+pridemo do zaključka, da je potrebna velikost hitrosti telesa enaka
 
 <img src="img/hitrost.png" width="130" height = "50" align="center">
 
