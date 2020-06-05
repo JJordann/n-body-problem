@@ -7,16 +7,16 @@ using Images
 
 function main() 
     n_of_clusters = 2
-    n_of_objects_per_cluster = 3000
+    n_of_objects_per_cluster = 500
 
     # image size
-    n = 512 + 256
+    n = 512 
 
     # dolžina koraka Eulerjeve metode
     dt = 0.0005
 
     # število iteracij Eulerjeve metode, ki jih bo program izvedel
-    iters = 650;
+    iters = 100;
 
     G = 10
     N = n_of_clusters * n_of_objects_per_cluster
